@@ -147,6 +147,43 @@ flutter run -d windows
 
 ---
 
+### 5. Como Abrir e Rodar no Android Studio (Passo a Passo)
+
+Se você prefere utilizar a interface gráfica do **Android Studio**, siga as etapas:
+
+#### 1. Instalar os Plugins do Flutter e Dart
+1. Abra o Android Studio.
+2. Vá em **Plugins** na tela inicial (ou no menu `File` > `Settings` > `Plugins` no Windows/Linux; `Preferences` > `Plugins` no macOS).
+3. Na aba **Marketplace**, digite `Flutter` e clique em **Install** (o plugin do `Dart` será instalado automaticamente como dependência).
+4. Reinicie o Android Studio se solicitado.
+
+#### 2. Abrir o Projeto
+1. Na tela inicial do Android Studio, clique em **Open** (ou vá em `File` > `Open...`).
+2. Selecione a pasta onde o projeto foi clonado (`Avisa-Mais`) e clique em **OK**.
+3. Aguarde o Android Studio indexar os arquivos do projeto.
+
+#### 3. Sincronizar as Dependências
+1. Abra o arquivo `pubspec.yaml` na árvore lateral esquerda.
+2. Na barra de notificação superior amarela/azul, clique em **`Flutter pub get`** (ou abra o terminal integrado do Android Studio com `Alt + F12` e digite `flutter pub get`).
+
+#### 4. Iniciar um Emulador Android ou Conectar Celular
+- **Usando Emulador (AVD):**
+  1. Abra o **Device Manager** na barra lateral direita ou no menu superior (`Tools` > `Device Manager`).
+  2. Caso não possua um emulador configurado, clique em **Create Device** (ex: Pixel 7 com imagem de sistema Android 13/14).
+  3. Clique no botão de **Play (▶️)** ao lado do emulador para iniciá-lo.
+- **Usando Celular Físico:**
+  - Conecte seu aparelho via cabo USB com a opção **Depuração USB** habilitada nas *Opções do Desenvolvedor*.
+
+#### 5. Executar o Aplicativo
+1. Na barra de ferramentas superior do Android Studio:
+   - Certifique-se de que o alvo de execução está apontando para `main.dart` (arquivo em `lib/main.dart`).
+   - No seletor de dispositivos, verifique se o seu emulador ou celular conectado está selecionado.
+2. Clique no botão verde **Run** (ícone de Play ▶️ ou atalho `Shift + F10`) ou **Debug** (ícone de besouro 🐞 ou `Shift + F9`).
+3. O Android Studio compilará o app e o abrirá automaticamente no emulador ou dispositivo.
+4. Para aplicar mudanças no código em tempo real, use o botão de **Hot Reload** (ícone de raio ⚡ ou atalho `Ctrl + \`).
+
+---
+
 ## 🔧 Dicas e Resolução de Problemas
 
 - **Limpar cache e reconstruir:**
