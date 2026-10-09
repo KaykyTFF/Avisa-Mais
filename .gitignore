@@ -31,8 +31,9 @@ $RECYCLE.BIN/
 *.sln
 *.sw?
 .vs/
-Debug/
-Release/
+windows/**/Debug/
+windows/**/Release/
+!**/android/app/src/debug/
 
 # Flutter / Dart / Pub
 **/doc/api/
