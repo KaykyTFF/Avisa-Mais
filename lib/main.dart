@@ -9,9 +9,9 @@ import 'screens/splash_screen.dart';
 import 'theme/app_colors.dart';
 import 'widgets/app_bottom_nav_bar.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   runApp(const MyApp());
