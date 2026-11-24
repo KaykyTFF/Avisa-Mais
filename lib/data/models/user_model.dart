@@ -36,11 +36,11 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
-        'id': String id,
-        'name': String name,
-        'email': String email,
-        'matricula': String matricula,
-        'campus': String campus,
+        'id': final String id,
+        'name': final String name,
+        'email': final String email,
+        'matricula': final String matricula,
+        'campus': final String campus,
       } =>
         UserModel(
           id: id,

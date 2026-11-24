@@ -1,0 +1,34 @@
+name: CI — Flutter Quality Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  quality-gate:
+    name: Format, Analyze & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Static analysis (strict)
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Architecture guardrail tests
+        run: flutter test test/architecture/
+
+      - name: Unit & widget test suite
+        run: flutter test --coverage

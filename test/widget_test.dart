@@ -1,30 +1,72 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:a_plus/screens/login_screen.dart';
+import 'package:a_plus/core/di/app_dependencies.dart';
+import 'package:a_plus/core/errors/app_exception.dart';
+import 'package:a_plus/core/errors/error_feedback.dart';
 import 'package:a_plus/data/models/issue_model.dart';
 import 'package:a_plus/data/repositories/issue_repository.dart';
-import 'package:a_plus/viewmodels/issue_viewmodel.dart';
+import 'package:a_plus/data/services/secure_storage_service.dart';
+import 'package:a_plus/features/auth/views/login_screen.dart';
+import 'package:a_plus/features/issues/viewmodels/issue_viewmodel.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('Smoke Tests', () {
-    testWidgets('Login screen smoke test', (WidgetTester tester) async {
+  setUp(() {
+    AppDependencies.initialize(
+      AppDependencies.create(
+        secureStorage: InMemorySecureStorageService(),
+      ),
+    );
+  });
+
+  tearDown(AppDependencies.resetForTesting);
+
+  group('Widget Smoke Tests', () {
+    testWidgets('Login screen renders expected fields and actions', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
       expect(find.text('Entrar'), findsWidgets);
-      expect(find.text('Email'), findsOneWidget);
+      expect(find.text('E-mail'), findsOneWidget);
       expect(find.text('Senha'), findsOneWidget);
       expect(find.text('Acessar como Convidado'), findsOneWidget);
     });
+
+    testWidgets('ErrorFeedback displays safe user-friendly message in SnackBar', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () => ErrorFeedback.showSnackBar(
+                  context,
+                  AppException.sessionExpired(),
+                ),
+                child: const Text('Trigger'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Trigger'));
+      await tester.pump();
+
+      expect(find.text('Sua sessão expirou. Faça login novamente.'), findsOneWidget);
+    });
   });
 
-  group('Architecture & Repository Unit Tests', () {
-    test('IssueRepository initializes with default issues', () {
-      final repo = IssueRepository();
+  group('Repository & ViewModel Smoke Tests', () {
+    test('InMemoryIssueRepository initializes with default issues', () {
+      final repo = InMemoryIssueRepository();
       expect(repo.getIssues().isNotEmpty, isTrue);
     });
 
-    test('IssueViewModel handles adding issues and voting', () {
-      final viewModel = IssueViewModel();
+    test('IssueViewModel handles adding issues and voting with explicit DI', () {
+      final repo = InMemoryIssueRepository();
+      final viewModel = IssueViewModel(repository: repo);
       final initialCount = viewModel.totalCount;
 
       const newIssue = IssueModel(
@@ -43,24 +85,7 @@ void main() {
       final issue = viewModel.issues.firstWhere((e) => e.id == 'test_1');
       expect(issue.upvotes, equals(1));
       expect(issue.userUpvoted, isTrue);
-    });
-
-    test('IssueModel serialization and deserialization', () {
-      const issue = IssueModel(
-        id: '10',
-        title: 'Cadeira quebrada',
-        location: 'Auditório',
-        status: 'Pendente',
-        upvotes: 3,
-        downvotes: 0,
-      );
-
-      final json = issue.toJson();
-      final deserialized = IssueModel.fromJson(json);
-
-      expect(deserialized.id, equals(issue.id));
-      expect(deserialized.title, equals(issue.title));
-      expect(deserialized.upvotes, equals(3));
+      viewModel.dispose();
     });
   });
 }

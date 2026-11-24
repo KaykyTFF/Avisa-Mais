@@ -18,9 +18,9 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
-        'id': String id,
-        'userName': String userName,
-        'content': String content,
+        'id': final String id,
+        'userName': final String userName,
+        'content': final String content,
       } =>
         CommentModel(
           id: id,

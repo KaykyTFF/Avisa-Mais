@@ -58,12 +58,12 @@ class IssueModel {
   factory IssueModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {
       {
-        'id': String id,
-        'title': String title,
-        'location': String location,
-        'status': String status,
-        'upvotes': int upvotes,
-        'downvotes': int downvotes,
+        'id': final String id,
+        'title': final String title,
+        'location': final String location,
+        'status': final String status,
+        'upvotes': final int upvotes,
+        'downvotes': final int downvotes,
       } =>
         IssueModel(
           id: id,

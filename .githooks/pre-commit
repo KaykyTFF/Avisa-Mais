@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "Running Flutter pre-commit quality gate..."
+flutter analyze --fatal-infos --fatal-warnings || exit 1
+flutter test test/architecture/ || exit 1
